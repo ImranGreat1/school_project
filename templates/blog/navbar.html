@@ -1,0 +1,67 @@
+<!--Navbar -->
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark primary-color">
+  <a class="navbar-brand" href="{% url 'post_list' %}">3in1</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
+    aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <ul class="navbar-nav mr-auto nav-flex-icons">
+    <li class="nav-item">
+      <a class="nav-link " href="{% url 'my_books' %}">My Books</a>
+    </li>
+  </ul>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+
+
+      <!-- <li class="nav-item">
+        <a class="nav-link waves-effect waves-light">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link waves-effect waves-light">
+          <i class="fab fa-google-plus-g"></i>
+        </a>
+      </li> -->
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="#"></a>
+      </li> -->
+      <li class="nav-item dropdown mr-5">
+        {% if user.is_authenticated %}
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          {{ request.user.username }}
+          <i class="fas fa-user"></i>
+        </a>
+        {% else %}
+          <a href="{% url 'login' %}" class="nav-link">
+            Login
+            <i class="fas fa-user"></i>
+          </a>
+        {% endif %}
+        <div class="dropdown-menu dropdown-menu-left dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">
+          {% if user.is_authenticated %}
+
+            <a class="dropdown-item" href="{% url 'user_profile' %}">Profile</a>
+
+          {% if request.user.profile.is_representative %}
+            <a class="dropdown-item" href="{% url 'post_create' %}">Create Post</a>
+            <a class="dropdown-item" href="{% url 'upload_pdf' %}">Upload PDF</a>
+          {% endif %}
+
+          {% if request.user.is_superuser %}
+            <a class="dropdown-item" href="/admin/">Admin</a>
+          {% endif %}
+
+            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+
+          {% endif %}
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!--/.Navbar -->

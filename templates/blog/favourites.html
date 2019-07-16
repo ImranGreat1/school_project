@@ -1,0 +1,13 @@
+<form method="post">
+    {% csrf_token %}
+    {% if is_favourite %}
+        <button type="submit" name="post_id" value="{{ post.id }}" class="favourite-btn btn btn-sm btn-info">
+            Favourite
+        </button> Remove to favourite
+    {% else %}
+        <button type="submit" name="post_id" value="{{ post.id }}" class="favourite-btn btn btn-sm btn-outline-info">
+            Favourite
+        </button> Add to favourite
+    {% endif %}
+</form>
+

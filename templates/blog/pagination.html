@@ -1,0 +1,30 @@
+<ul class="pagination">
+
+    {% if posts.has_previous %}
+    <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
+    <li class="page-item">
+        <a href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"class="page-link">
+            &laquo;
+        </a>
+    </li>
+    {% endif %}
+
+    {% for num in page_range %}
+    {% if posts.number == num %}
+    <li class="page-item active"><a href="?page={{ num }}" class="page-link">{{ num }}</a></li>
+    {% else %}
+    <li class="page-item">
+        <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">
+            {{ num }}
+        </a>
+    </li>
+    {% endif %}
+    {% endfor %}
+
+    {% if posts.has_next %}
+    <li class="page-item"><a
+            href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+            class="page-link">&raquo;</a></li>
+    <li class="page-item"><a href="?page={{ posts.paginator.num_pages }}" class="page-link">Last</a></li>
+    {% endif %}
+</ul>

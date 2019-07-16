@@ -1,0 +1,56 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6 mt-5 mb-5">
+
+        <h5 style="text-align:center"><strong>Download Handouts and Notes Pdf</strong></h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Download/View</th>
+                    <!-- <th>Add/Remove Books</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for pdf_obj in pdf_list %}
+                <tr>
+                    <td>{{ pdf_obj.title }}</td>
+                    <td><a href="{{ pdf_obj.pdf.url }}" target="_blank" class="btn btn-sm btn-default">View</a></td>
+                    <td><a href="{% url 'add_to_my_books' pdf_obj.pk %}" class="btn btn-sm btn-primary">Add</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="col-md-6 mt-5 mb-5">
+    
+        <h5 style="text-align:center"><strong>Pdf Uploaded within a blog post</strong></h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Download/View</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post_pdf in post_pdf_list %}
+                <tr>
+                    <td>{{ post_pdf.description }}</td>
+                    <td><a href="{{ post_pdf.pdf.url }}" target="_blank" class="btn btn-sm btn-default">View</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+    </div>
+</div>
+
+
+
+
+{% endblock %}

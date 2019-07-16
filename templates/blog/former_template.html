@@ -1,0 +1,216 @@
+<div class="row">
+
+    <!-- {% if user.is_authenticated %}
+        <h2>{{ user.email }}</h2>
+    {% endif %} -->
+
+
+    {% for post in posts %}
+    <div class="col-md-6" style="list-style: none;">
+        <div class="img-thumbnail post-section">
+
+            <small>created by {{ post.author }} on {{ post.date_created }}</small>
+            <h6><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h6>
+            <p>{{ post.content }}</p>
+
+        </div><br>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+<ul class="pagination">
+
+    {% if posts.has_previous %}
+    <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
+    <li class="page-item"><a
+            href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+            class="page-link">&laquo;</a></li>
+    {% endif %}
+
+    {% for num in page_range %}
+    {% if posts.number == num %}
+    <li class="page-item active"><a href="?page={{ num }}" class="page-link">{{ num }}</a></li>
+    {% else %}
+    <li class="page-item"><a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+            class="page-link">{{ num }}</a></li>
+    {% endif %}
+    {% endfor %}
+
+    {% if posts.has_next %}
+    <li class="page-item"><a
+            href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+            class="page-link">&raquo;</a></li>
+    <li class="page-item"><a href="?page={{ posts.paginator.num_pages }}" class="page-link">Last</a></li>
+    {% endif %}
+</ul>
+
+</div>
+
+<div>
+
+
+
+
+<!-- NAV BAR -->
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+
+    <a class="navbar-brand" href="{% url 'post_list' %}">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            <form class="form-inline my-2 my-lg-0" action='{% url "post_list" %}'>
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name='q'>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+        </ul>
+        <ul class="navbar-nav">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <span>
+                        {% if user.is_authenticated %}
+                        {{ request.user.username }}
+                        {% endif %}
+                    </span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">My Profile</a>
+                    <a class="dropdown-item" href="{% url 'post_create' %}">Post Create</a>
+                    <a class="dropdown-item" href="{% url 'favourite_posts' %}">Favourite</a>
+                    {% if user.is_authenticated %}
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                    <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                    {% endif %}
+                </div>
+            </li>
+            <!-- {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a href="#" class="nav-link">{{ request.user.username }}</a>
+      </li>
+      {% endif %} -->
+        </ul>
+
+    </div>
+
+</nav>
+
+
+
+
+<!-- POST DETAIL TEMPLATE -->
+
+
+<div class="row">
+
+    <div class="col-md-6">
+        <small>created by {{ post.author }} on {{ post.date_created }}</small>
+        <h6 id="title">{{ post.title }}</h6>
+        <p class="content">{{ post.content }}</p>
+        {% if post.video %}
+        <p>Video section</p>
+        <video src="{{ post.video.url }}" controls width="650px" height="400px"></video>
+        {% endif %}
+
+        {% if post.image %}
+        <div>
+            <img src="{{ post.image.url }}" width="640px" height="360px">
+        </div>
+        {% endif %}
+
+        {% if post.pdf %}
+        <a href="{{ post.pdf.url }}" class="btn btn-primary btn-sm mb-1 mt-1" target="_blank">view pdf</a>
+        {% endif %}
+
+        <br>
+
+        <!-- Images set for the post -->
+        {% for p in post.moreimages_set.all %}
+        <div>
+            <img src="{{ p.image.url }}" class="img-responsive">
+            <p class="mt-1">{{ p.description }}</p>
+
+            {% if request.user == post.author %}
+            <a class="btn btn-sm btn-danger" href="{% url 'delete_image' p.pk post.pk %}">
+                <small>
+                    Delete
+                </small>
+            </a>
+
+            <a class="btn btn-sm btn-primary" href="{% url 'edit_image' p.pk post.pk %}">
+                <small>
+                    Update
+                </small>
+            </a>
+            {% endif %}
+        </div>
+
+        <br>
+        {% endfor %}
+
+        {% for p in post.morepdfs_set.all %}
+        <div>
+            {% if request.user == post.author %}
+            <a href="{% url 'pdf_delete' p.pk post.pk %}" class="btn btn-sm btn-danger mr-1">delete</a>
+            {% endif %}
+            <a href="{{ p.pdf.url }}" class="btn btn-sm btn-info mr-1" target="_blank">
+                View
+            </a>{{ p.description }}<br>
+            <a href="{% url 'pdf_delete' p.pk post.pk %}">delete {{ p.description }}</a>
+        </div>
+        <p>{{ p.description }}</p>
+        {% endfor %}
+
+        {% if request.user == post.author %}
+
+        <div>
+            <a href="{% url 'add_image' post.pk %}" class="btn btn-sm btn-secondary text-white mt-1">
+                Add Image
+            </a>
+        </div>
+
+        <div>
+            <a href="{% url 'add_pdf' post.pk %}" class="btn btn-sm btn-primary text-white mt-1">
+                Add PDF
+            </a>
+        </div>
+
+        {% endif %}
+
+        <div id="like-section">
+            {% include 'blog/like_section.html' %}
+        </div><br>
+
+        {% if user.is_authenticated %}
+        <div class="favourite-section mb-4">
+            {% include 'blog/favourites.html' %}
+        </div>
+        {% endif %}
+
+
+        {% if not post.restrict_comment %}
+        <div class="main-comment-section">
+            {% include 'blog/comments.html' %}
+        </div>
+        {% endif %}
+
+
+
+
+    </div>
+
+
+</div>

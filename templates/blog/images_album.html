@@ -1,0 +1,15 @@
+{% extends 'blog/base.html'%}
+
+{% block content %}
+
+
+{% for image_obj in images_album %}
+
+    <div>
+        <img src="{{ image_obj.image.url }}" width="640px" height="360px">
+    </div>
+
+{% endfor %}
+
+
+{% endblock content %}

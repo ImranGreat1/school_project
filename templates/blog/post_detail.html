@@ -1,0 +1,128 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<!-- Section: Blog v.4 -->
+<section class="my-5">
+
+    <!-- Grid row -->
+    <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-10 offset-md-1">
+
+            <!-- Card content -->
+            <div class="card-body card-body-cascade text-center">
+            
+                <!-- Title -->
+                <h2 class="font-weight-bold"><a>{{ post.title }}</a></h2>
+                <!-- Data -->
+                <p>Written by <a><strong>{{ post.author }}</strong></a>, {{ post.date_created|date }}</p>
+            
+            </div>
+            <!-- Card content -->
+
+            
+            {% if post.image %}
+            <!-- Card -->
+            <div class="card card-cascade wider reverse">
+
+                <!-- Card image -->
+
+                
+                
+                <div class="view view-cascade overlay">
+
+                    
+                        <img class="card-img-top" src="{{ post.image.url }}" alt="Sample image">
+                    
+                    
+                    <a href="#!">
+                        <div class="mask rgba-white-slight"></div>
+                    </a>
+                </div>
+                
+                
+
+            </div>
+            {% endif %}
+            <!-- Card -->
+            
+
+            <!-- Excerpt -->
+            <div class="{% if post.image %}mt-5{% else %}mt-0{% endif %}">
+
+                <p class="">{{ post.content }}</p>
+
+            </div>
+
+
+            <!-- Images set for the post -->
+            {% for p in post.moreimages_set.all %}
+            <div>
+                <img class="card-img-top" src="{{ p.image.url }}" class="img-responsive">
+                <p class="mt-1">{{ p.description }}</p>
+            
+                {% if request.user == post.author %}
+                <a class="btn btn-sm btn-danger" href="{% url 'delete_image' p.pk post.pk %}">
+                    <small>
+                        Delete
+                    </small>
+                </a>
+            
+                <a class="btn btn-sm btn-primary" href="{% url 'edit_image' p.pk post.pk %}">
+                    <small>
+                        Update
+                    </small>
+                </a>
+                {% endif %}
+            </div>
+            
+            <br>
+            {% endfor %}
+
+            {% if request.user == post.author %}
+            
+            <div>
+                <a href="{% url 'add_image' post.id %}" class="btn btn-sm btn-pink">Add image</a>
+            </div>
+            
+            <div>
+                <a href="{% url 'add_pdf' post.id %}" class="btn btn-sm btn-secondary">Add PDF</a>
+            </div>
+
+            {% endif %}
+            
+            <div id="like-section">
+                {% include 'blog/like_section.html' %}
+            </div><br>
+            
+            {% if user.is_authenticated %}
+            <div class="favourite-section mb-4">
+                {% include 'blog/favourites.html' %}
+            </div>
+            {% endif %}
+            
+            {% if not post.restrict_comment %}
+            <div class="main-comment-section">
+                {% include 'blog/comments.html' %}
+            </div>
+            {% endif %}
+
+        </div>
+        <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+    <hr class="mb-5 mt-4">
+
+    
+</section>
+<!-- Section: Blog v.4 -->
+
+
+
+
+
+{% endblock content %}

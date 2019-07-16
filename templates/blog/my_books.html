@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12 mt-5 mb-5">
+
+        <h5 style="text-align:center"><strong>My Books</strong></h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Download/View</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td><a href="{{ book.pdf.url }}" target="_blank" class="btn btn-sm btn-default">View</a></td>
+                    <td><a href="{% url 'remove_from_my_books' book.pk %}" class="btn btn-sm btn-danger">Remove</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+
+
+{% endblock %}

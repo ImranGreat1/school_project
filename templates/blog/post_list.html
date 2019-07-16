@@ -1,0 +1,61 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<!-- Section: Blog v.2 -->
+<section class="text-center my-5">
+
+
+    <!-- Grid row -->
+    <div class="row">
+
+        {% for post in posts %}
+        
+
+        <!-- Grid column -->
+        <div class="col-lg-4 col-md-12 mb-lg-0 mb-4 pb-4">
+
+            <!-- Featured image -->
+            <div class="view overlay rounded z-depth-2 mb-2">
+                {% if post.image %}
+                    <img class="img-fluid" src="{{ post.image.url }}" alt="Sample image">
+                {% endif %}
+                
+                <a href="{{ post.get_absolute_url }}">
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+            </div>
+
+            <!-- Category -->
+            {% if user.is_authenticated %}
+            <span class="pink-text">
+                <h6 class="font-weight-bold mb-3"><i class="fas fa-map pr-2"></i>{{ post.level }} level</h6>
+            </span>
+            {% endif %}
+            <!-- Post title -->
+            <h5 class="font-weight-bold mb-2"><strong>{{ post.title }}</strong></h5>
+            <!-- Post data -->
+            <p>by <a class="font-weight-bold">{{ post.author }}</a>, {{ post.date_created|timesince }} ago</p>
+            <!-- Excerpt -->
+            <p class="dark-grey-text">{{ post.content|linebreaks|truncatechars:250 }}</p>
+            <!-- Read more button -->
+            <a class="btn btn-outline-pink btn-rounded btn-sm" href="{{ post.get_absolute_url }}">Read more</a>
+
+        </div>
+        <!-- Grid column -->
+        {% endfor %}
+
+        <hr>
+
+    </div>
+    <!-- Grid row -->
+
+</section>
+<!-- Section: Blog v.2 -->
+
+
+
+{% include 'blog/pagination.html' %}
+
+
+{% endblock %}

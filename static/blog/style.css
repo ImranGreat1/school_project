@@ -1,0 +1,69 @@
+html {
+  position: relative;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Lucida Casaul', 'Comic Sans MS';
+  margin-bottom: 160px;
+  margin: 0;
+  padding: 0;
+}
+
+.post-section {
+    padding: 10px;
+}
+
+
+body {
+    margin-bottom: 140px;
+}
+
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 130px;
+  padding: 15px;
+  background-color: #2C3E50;
+}
+
+.footer p {
+  text-align: justify;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* .navbar-img {
+  width: 30px;
+  height: 35px;
+  float: left;
+  background-size: auto 100%;
+  margin-top: -5px;
+  margin-right: 5px;
+} */
+
+/* .gallery {
+  margin-top: 20px;
+  margin-bottom: 20px;
+} */
+
+/* .gallery .img-thumbnail {
+  height: 250px;
+  width: 300px;
+} */
+
+

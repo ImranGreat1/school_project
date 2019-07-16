@@ -1,0 +1,52 @@
+<div class="form-group row container-fluid">
+    <form method="post" class="comment-form" action=".">
+        {% csrf_token %}
+        {{ comment_form }}<br>
+        {% if user.is_authenticated %}
+            <button type="submit" class="btn btn-sm btn-outline-success">Comment</button>
+        {% else %}
+            <button type="submit" class="btn btn-sm btn-outline-success ml" disabled>Comment</button>
+        {% endif %}
+    </form>
+</div>
+
+<br><hr>
+
+{% for comment in comments %}
+    <blockquote>
+       <p class="mb-0"><small>{{ comment.content }}</small></p>
+       <footer class="blockquote-footer">
+            by <cite class="Source Title"><small>{{ comment.user }}</small></cite>
+            <button type="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">
+                <small>Reply</small>
+            </button>
+        </footer>
+    </blockquote>
+
+
+    <div class="replied-comments container" style="display:None;">
+
+        {% for reply in comment.replies.all %}
+            <blockquote class="ml-2">
+               <p class="mb-0"><small>{{ reply.content }}</small></p>
+               <footer class="blockquote-footer">
+                    by <cite class="Source Title"><small>{{ reply.user }}</small></cite>
+                </footer>
+            </blockquote>
+        {% endfor %}
+
+        <div class="form-group row">
+            <form method="post" class="reply-form" action=".">
+                {% csrf_token %}
+                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                {{ comment_form }}<br>
+                {% if user.is_authenticated %}
+                    <button type="submit" class="btn btn-sm btn-outline-success">submit</button>
+                {% else %}
+                    <button type="submit" class="btn btn-sm btn-outline-success" disabled>submit</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+{% endfor %}

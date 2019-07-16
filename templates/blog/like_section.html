@@ -1,0 +1,21 @@
+<div class="mt-4">
+    <small class="text-muted">{{ total_likes }} Like{{ total_likes|pluralize }}</small>
+</div>
+<form method="post" action="{% url 'like_post'%}">
+    {% if user.is_authenticated %}
+        {% csrf_token %}
+        <!-- {% if is_liked %}
+            <button type="submit" id="like" name="post_id" value="{{ post.id }}" class="btn btn-sm btn-danger">DisLike</button>
+        {% else %}
+            <button type="submit" id="like" name="post_id" value="{{ post.id }}" class="btn btn-sm btn-primary">Like</button>
+        {% endif %} -->
+        {% if is_liked %}
+            <button type="submit" id="like" class="btn btn-sm btn-danger">DisLike</button>
+        {% else %}
+            <button type="submit" id="like" class="btn btn-sm btn-primary">Like</button>
+        {% endif %}
+
+        <input type="hidden" id="hidden-post" name="post_id" value="{{ post.id }}">
+    {% endif %}
+</form>
+

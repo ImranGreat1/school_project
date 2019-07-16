@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+
+{% for pdf_obj in pdf_list %}
+
+<ul>
+    <li>
+        {{ pdf_obj.description }} 
+        <a href="{{ pdf_obj.pdf.url }}" target="_blank" class="btn btn-sm btn-outline-default">View</a>
+    </li>
+</ul>
+
+{% endfor %}
+
+
+{% endblock %}
